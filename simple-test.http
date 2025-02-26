@@ -1,0 +1,14 @@
+@email = aguejdadmoncef2@gmail.com
+
+### Test 1: Get Projects
+GET http://localhost:3000/api/projects
+Authorization: Bearer {{email}}
+
+### Test 2: Admin Login
+POST http://localhost:3000/api/admin/verify
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "adminCode": "DEEZ"
+} 

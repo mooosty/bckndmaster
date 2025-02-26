@@ -1,0 +1,286 @@
+# Configuration
+@baseUrl = http://localhost:3000/api
+@email = aguejdadmoncef2@gmail.com
+@projectId = 67abec5d22d1a9606335ad95
+@applicationId = 67abef6a22d1a9606335ad9c
+@taskId = 67abf71d22d1a9606335adb5
+@modificationId = 67ac253922d1a9606335ade7
+
+### 1. Authentication Tests
+
+### 1.1 Admin Login
+POST {{baseUrl}}/admin/verify
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "adminCode": "DEEZ"
+}
+
+### 2. Project Tests
+
+### 2.1 Get All Projects
+GET {{baseUrl}}/projects
+Authorization: Bearer {{email}}
+
+### 2.2 Create Project
+POST {{baseUrl}}/projects
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "title": "Test Project",
+    "description": "This is a test project",
+    "imageUrl": "https://example.com/image.jpg",
+    "status": "COMING_SOON"
+}
+
+### 2.3 Update Project Status
+PUT {{baseUrl}}/projects/{{projectId}}/status
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "OPEN"
+}
+
+### 3. Application Tests
+
+### 3.1 Submit Application
+POST {{baseUrl}}/projects/{{projectId}}/apply
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "answers": [
+        "Answer to question 1",
+        "Answer to question 2"
+    ]
+}
+
+### 3.2 Get User Applications
+GET {{baseUrl}}/applications
+Authorization: Bearer {{email}}
+
+### 3.3 Update Application Status (Accept/Reject)
+PUT {{baseUrl}}/applications/{{applicationId}}/status
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "ACCEPTED"
+}
+
+### 4. Task Tests
+
+### 4.1 Create Task
+POST {{baseUrl}}/projects/{{projectId}}/tasks
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "title": "Test Task",
+    "description": "This is a test task",
+    "platform": "GitHub",
+    "deliverables": ["Code implementation", "Documentation"]
+}
+
+### 4.2 Submit Task
+POST {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/submit
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "link": "https://github.com/yourusername/repo",
+    "description": "Completed the implementation"
+}
+
+### 4.3 User Accepts Task
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/verify
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "ACCEPTED",
+    "isAdmin": false
+}
+
+### 4.3.1 Admin Accepts Task
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/verify
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "ACCEPTED",
+    "isAdmin": true
+}
+
+### 4.3.2 Decline Task
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/verify
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "DECLINED",
+    "isAdmin": false
+}
+
+### 4.3.3 Reset Task Status (Test Only)
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/reset-status
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "PENDING"
+}
+
+### 4.4 Negotiate Task
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/negotiate
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "proposedChanges": {
+        "title": "Updated Task Title",
+        "description": "Modified task description with additional requirements",
+        "deliverables": [
+            "Modified deliverable 1",
+            "New deliverable 2",
+            "Split deliverable 3.1",
+            "Split deliverable 3.2"
+        ],
+        "platform": "Updated platform requirements"
+    },
+    "comments": "Requesting these changes to better align with project requirements and timeline"
+}
+
+### 4.5 Approve Task Modification
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/modifications/{{modificationId}}
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "APPROVED",
+    "comments": "Changes approved, please proceed with the implementation"
+}
+
+### 4.6 Reject Task Modification
+PUT {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/modifications/{{modificationId}}
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "status": "REJECTED",
+    "comments": "Please revise the deliverables to be more specific"
+}
+
+### 4.7 Get Task-Specific Chat Messages
+GET {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/chat
+Authorization: Bearer {{email}}
+
+### 4.8 Send Task-Specific Chat Message
+POST {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/chat
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "content": "Can we discuss the implementation details of this specific task?",
+    "messageType": "GENERAL"
+}
+
+### 4.9 Send Task-Specific Modification Discussion
+POST {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/chat
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "content": "I suggest we break down this task's second deliverable into smaller parts",
+    "messageType": "MODIFICATION_REQUEST"
+}
+
+### 5. Project Chat Tests
+
+### 5.1 Get My Messages
+# Gets all messages between me and admin for this project
+GET {{baseUrl}}/projects/{{projectId}}/chat
+Authorization: Bearer {{email}}
+
+### 5.2 Send General Question
+POST {{baseUrl}}/projects/{{projectId}}/chat
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "content": "Hi admin, I'm interested in this project. What tech stack will we be using?",
+    "messageType": "GENERAL"
+}
+
+### 5.3 Send Application Question
+POST {{baseUrl}}/projects/{{projectId}}/chat
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "content": "I submitted my application. When can I expect to hear back?",
+    "messageType": "GENERAL"
+}
+
+### 5.4 Ask About Task
+POST {{baseUrl}}/projects/{{projectId}}/chat
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "content": "I have some questions about the task requirements",
+    "messageType": "TASK_DISCUSSION",
+    "relatedTaskId": "{{taskId}}"
+}
+
+### 5.5 Discuss Task Modification
+POST {{baseUrl}}/projects/{{projectId}}/chat
+Content-Type: application/json
+Authorization: Bearer {{email}}
+
+{
+    "content": "Regarding the task modification I proposed, could we discuss the deliverables in more detail?",
+    "messageType": "TASK_DISCUSSION",
+    "relatedTaskId": "{{taskId}}"
+}
+
+### 6. Additional Endpoints
+
+### 6.1 Get Single Project Details
+GET {{baseUrl}}/projects/{{projectId}}
+Authorization: Bearer {{email}}
+
+### 6.2 Get Project Tasks
+# Get all tasks for a specific project
+GET {{baseUrl}}/projects/{{projectId}}/tasks
+Authorization: Bearer {{email}}
+
+### 6.3 Get Single Task Details
+GET {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}
+Authorization: Bearer {{email}}
+
+### 6.4 Get Task Modifications History
+# Get all modification requests and their statuses for a task
+GET {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}/modifications
+Authorization: Bearer {{email}}
+
+### 6.5 Get User Profile
+GET {{baseUrl}}/user/profile
+Authorization: Bearer {{email}}
+
+### 6. Missing Endpoints
+
+### 6.1 Get Single Project Details
+GET {{baseUrl}}/projects/{{projectId}}
+Authorization: Bearer {{email}}
+
+### 6.2 Get Single Task Details
+GET {{baseUrl}}/projects/{{projectId}}/tasks/{{taskId}}
+Authorization: Bearer {{email}}
+
+### 6.3 Get User Profile
+GET {{baseUrl}}/user/profile
+Authorization: Bearer {{email}} 

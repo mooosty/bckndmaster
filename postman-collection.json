@@ -1,0 +1,86 @@
+{
+  "info": {
+    "name": "Backend API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Verify Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/admin/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adminCode\": \"DEEZ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Get All Projects",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/projects"
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/projects",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Project\",\n  \"description\": \"This is a test project\",\n  \"imageUrl\": \"https://example.com/image.jpg\",\n  \"status\": \"COMING_SOON\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Project Status",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": "{{baseUrl}}/projects/{{projectId}}/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"OPEN\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "projectId",
+      "value": "your-project-id-here"
+    }
+  ]
+} 

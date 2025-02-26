@@ -1,0 +1,13 @@
+### Test GET
+GET http://localhost:3000/api/projects
+Authorization: Bearer aguejdadmoncef2@gmail.com
+
+###
+
+### Test Admin
+POST http://localhost:3000/api/admin/verify
+Content-Type: application/json
+
+{
+    "adminCode": "DEEZ"
+} 

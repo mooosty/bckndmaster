@@ -1,0 +1,594 @@
+/* Popup Overlay */
+.popup_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Popup Content */
+.popup_content {
+  background: rgba(42, 42, 40, 0.95);
+  border: 1px solid rgba(245, 239, 219, 0.1);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+/* Close Button */
+.popup_close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(245, 239, 219, 0.1);
+  color: rgba(245, 239, 219, 0.6);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.popup_close:hover {
+  background: rgba(245, 239, 219, 0.2);
+  color: rgba(245, 239, 219, 0.9);
+}
+
+/* Step Indicator */
+.step_indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 2rem 0;
+  gap: 0.75rem;
+}
+
+.step {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  background: rgba(245, 239, 219, 0.1);
+  color: rgba(245, 239, 219, 0.6);
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  transition: all 0.3s ease;
+}
+
+.step.active {
+  background: #F5EFDB;
+  color: #2A2A28;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(245, 239, 219, 0.2);
+}
+
+.step_line {
+  flex: 1;
+  height: 2px;
+  background: rgba(245, 239, 219, 0.1);
+  max-width: 60px;
+}
+
+/* Popup Body */
+.popup_body {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+  
+  /* Custom Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 239, 219, 0.2) transparent;
+}
+
+.popup_body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.popup_body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.popup_body::-webkit-scrollbar-thumb {
+  background-color: rgba(245, 239, 219, 0.2);
+  border-radius: 3px;
+}
+
+.popup_body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(245, 239, 219, 0.3);
+}
+
+/* Title */
+.popup_title {
+  font-size: 32px;
+  color: #F5EFDB;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Sections Container */
+.sections_container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Section Styles */
+.section {
+  background: rgba(78, 78, 78, 0.1);
+  border: 1px solid rgba(245, 239, 219, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.section h3 {
+  color: #F5EFDB;
+  font-size: 24px;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+/* Options Container */
+.options_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.default_options,
+.custom_options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* Option Styles */
+.option {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 36px;
+  position: relative;
+  user-select: none;
+}
+
+.option.default {
+  background: rgba(78, 78, 78, 0.2);
+  border: 1px solid rgba(245, 239, 219, 0.2);
+}
+
+.option.default:hover {
+  background: rgba(78, 78, 78, 0.3);
+}
+
+.option.default.selected {
+  background: rgba(245, 239, 219, 0.15);
+  border-color: #F5EFDB;
+}
+
+.option.custom {
+  background: rgba(245, 239, 219, 0.1);
+  border: 2px dashed rgba(245, 239, 219, 0.5);
+  padding: 0.5rem 1.5rem 0.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.option.custom:hover {
+  background: rgba(245, 239, 219, 0.15);
+}
+
+.option.custom.selected {
+  background: rgba(245, 239, 219, 0.2);
+  border: 2px dashed #F5EFDB;
+}
+
+.option label {
+  color: #F5EFDB;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.option.selected label {
+  opacity: 1;
+}
+
+/* Delete Button */
+.delete_btn {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(245, 239, 219, 0.05);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #F5EFDB;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.delete_btn:hover {
+  opacity: 1;
+  background: rgba(245, 239, 219, 0.1);
+  border-color: rgba(245, 239, 219, 0.3);
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #191917;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #F5EFDB;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  pointer-events: none;
+  z-index: 10;
+  min-width: 120px;
+  max-width: 250px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #191917 transparent transparent transparent;
+}
+
+.option.custom:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Add Custom Field */
+.add_custom_field {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.input_group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.add_custom_field input,
+.explanation_field {
+  background: transparent;
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  color: #F5EFDB;
+  font-size: 14px;
+  width: 100%;
+  min-width: 300px;
+  height: 40px;
+  flex: 1;
+}
+
+.explanation_field {
+  min-height: 60px;
+  resize: vertical;
+  font-family: inherit;
+  width: 100%;
+}
+
+.add_custom_field input::placeholder,
+.explanation_field::placeholder {
+  color: rgba(245, 239, 219, 0.4);
+}
+
+.add_custom_field input:focus,
+.explanation_field:focus {
+  outline: none;
+  border-color: rgba(245, 239, 219, 0.4);
+}
+
+.add_custom_field button {
+  background: rgba(78, 78, 78, 0.58);
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  border-radius: 4px;
+  padding: 0 1.5rem;
+  color: #F5EFDB;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+.add_custom_field button:hover {
+  background: rgba(78, 78, 78, 0.8);
+  border-color: rgba(245, 239, 219, 0.4);
+}
+
+/* Socials Section */
+.socials_section .socials_container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.social_input_group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(78, 78, 78, 0.2);
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.social_input_group:hover {
+  background: rgba(78, 78, 78, 0.3);
+}
+
+.social_input_group.selected {
+  background: rgba(245, 239, 219, 0.15);
+  border-color: #F5EFDB;
+}
+
+.social_label {
+  min-width: 120px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.social_inputs {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.social_inputs input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  border-radius: 4px;
+  background: transparent;
+  color: #F5EFDB;
+  font-size: 14px;
+  flex: 1;
+}
+
+.social_inputs .audience_input {
+  width: 40%;
+  text-align: right;
+}
+
+.social_inputs input::placeholder {
+  color: rgba(245, 239, 219, 0.4);
+}
+
+.social_inputs input:focus {
+  outline: none;
+  border-color: rgba(245, 239, 219, 0.4);
+}
+
+/* Contribution Section */
+.contribution_section .contribution_container {
+  background: rgba(78, 78, 78, 0.1);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.contribution_prompt {
+  color: #F5EFDB;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.contribution_textarea {
+  width: 100%;
+  min-height: 160px;
+  background: rgba(25, 25, 23, 0.6);
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #F5EFDB;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.contribution_textarea::placeholder {
+  color: rgba(245, 239, 219, 0.4);
+}
+
+.contribution_textarea:focus {
+  outline: none;
+  border-color: rgba(245, 239, 219, 0.4);
+  background: rgba(25, 25, 23, 0.8);
+}
+
+/* Navigation Buttons */
+.button_group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(245, 239, 219, 0.1);
+}
+
+.back_button {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(245, 239, 219, 0.2);
+  color: #F5EFDB;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back_button:hover {
+  background: rgba(245, 239, 219, 0.1);
+  border-color: rgba(245, 239, 219, 0.3);
+}
+
+.next_button,
+.save_button {
+  padding: 0.75rem 1.5rem;
+  background: #F5EFDB;
+  color: #2A2A28;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+
+.next_button:hover,
+.save_button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.save_button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .popup_content {
+    border-radius: 16px;
+  }
+
+  .popup_body {
+    padding: 1.5rem;
+  }
+
+  .popup_title {
+    font-size: 24px;
+    margin-bottom: 1.5rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .section h3 {
+    font-size: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .social_input_group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .social_label {
+    min-width: auto;
+  }
+
+  .social_inputs {
+    flex-direction: column;
+  }
+
+  .social_inputs .audience_input {
+    width: 100%;
+  }
+
+  .add_custom_field {
+    flex-direction: column;
+  }
+
+  .add_custom_field button {
+    width: 100%;
+  }
+
+  .step {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .step_line {
+    max-width: 40px;
+  }
+
+  .button_group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .back_button,
+  .next_button,
+  .save_button {
+    width: 100%;
+  }
+} 
